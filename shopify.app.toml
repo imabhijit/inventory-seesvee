@@ -2,7 +2,7 @@
 
 client_id = "ed0e138019cc0f0251d05752e96475a2"
 name = "inventory-seesvee"
-application_url = "https://heating-neighbors-gnu-committed.trycloudflare.com"
+application_url = "https://durable-confirm-lewis-improvement.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "read_inventory,write_products"
 
 [auth]
 redirect_urls = [
-  "https://heating-neighbors-gnu-committed.trycloudflare.com/auth/callback",
-  "https://heating-neighbors-gnu-committed.trycloudflare.com/auth/shopify/callback",
-  "https://heating-neighbors-gnu-committed.trycloudflare.com/api/auth/callback"
+  "https://durable-confirm-lewis-improvement.trycloudflare.com/auth/callback",
+  "https://durable-confirm-lewis-improvement.trycloudflare.com/auth/shopify/callback",
+  "https://durable-confirm-lewis-improvement.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

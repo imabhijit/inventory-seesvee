@@ -1,4 +1,4 @@
-import { json } from '@remix-run/node'
+import { ActionFunctionArgs, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { Layout, Page, Card, Text, Link, Button, DropZone, BlockStack, InlineGrid, TextField } from '@shopify/polaris'
 import React, { useCallback, useState } from 'react'
@@ -8,6 +8,13 @@ import ProductTable from '~/components/ProductTable'
 import { authenticate } from '~/shopify.server'
 
 type Props = {}
+
+export async function action ({ request }: ActionFunctionArgs) {
+    // let formData = await request.formData();
+    // const data = Object.fromEntries(formData);
+    // console.log(json(formData.get("form")));
+    return json(request);
+}
 
 export async function loader({ request }) { 
     const { admin, session } = await authenticate.admin(request);

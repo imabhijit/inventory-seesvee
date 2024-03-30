@@ -1,34 +1,43 @@
-import { BlockStack, Button, CalloutCard, Card, Form, FormLayout, Text } from '@shopify/polaris'
+import { BlockStack, Button, CalloutCard, Card, Form, FormLayout, Text, TextField } from '@shopify/polaris'
 import { useCallback, useEffect, useState } from 'react';
 import Papa from 'papaparse'
 import CsvSelectInput from './CsvSelectInput';
+import { useSubmit } from '@remix-run/react';
+import { ActionFunctionArgs } from '@remix-run/node';
 
 type Props = {files: File[]}
 
-interface FileColumns {
-  file: string;
+interface FileData {
+  file: string
   columns: string[]
+  data: any[]
 }
 
 const CsvSelectorCard = ({files}: Props) => {
-  const [fileColumns, setfileColumns] = useState<FileColumns[]>([])
+  const [fileData, setfileData] = useState<FileData[]>([]);
+  const [title, setTitle] = useState();
+  const submit = useSubmit();
+  const handleTitleChange = (value) => setTitle(value);
   useEffect(() => {
       files.map(file => {
         Papa.parse(file, {
           header: true,
-          complete: (result) => setfileColumns((fcs) => {
+          complete: (result) => setfileData((fcs) => {
             const mapping = {
               'file': file.name,
-              'columns': result.meta.fields
-            } as FileColumns;
+              'columns': result.meta.fields,
+              'data': result.data
+            } as FileData;
             return [...fcs, mapping]
           })
         })
       });
   }, [files]);
 
-  const handleSubmit = useCallback((data) => {
-    console.log(data);
+  const handleSubmit = useCallback((form) => {
+    console.log(form);
+    let data = {};
+    submit(data, { method: "post", encType: "application/json" });
   }, []);
 
   return (
@@ -36,7 +45,14 @@ const CsvSelectorCard = ({files}: Props) => {
      <Text as='h4' variant="headingMd"> Import CSV Data </Text>
           <Form onSubmit={handleSubmit}>
             <FormLayout>
-                {fileColumns.map((fc) => <CsvSelectInput filename={fc.file} columns={fc.columns} />)}
+                {fileData.map((fc) => <CsvSelectInput key={fc.file} filename={fc.file} columns={fc.columns} />)}
+                <TextField
+                  autoComplete='off'
+                  label="Title"
+                  type="text"
+                  onChange={handleTitleChange}
+                  value={title}
+                />
                 <Button submit>Submit</Button>
             </FormLayout>
           </Form>
